@@ -11,7 +11,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",              # local frontend dev
-        "https://your-frontend-domain.com",     # update once deployed
+        "https://mcq-agent.vercel.app/",     # update once deployed
     ],
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
