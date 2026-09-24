@@ -10,6 +10,7 @@ langchain-pinecone
 pinecone-client
 pypdf
 docx2txt
+python-pptx
 unstructured
 python-multipart
 apscheduler
