@@ -11,9 +11,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://mcq-agent.vercel.app",
-        "http://localhost:5173"           # local frontend dev
     ],
-    allow_methods=["GET", "POST"],
+    allow_credentials=True,
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
@@ -24,7 +24,7 @@ scheduler = AsyncIOScheduler()
 
 @app.on_event("startup")
 async def on_startup():
-    cleanup_expired_namespaces()   # runs once immediately — covers "server restarted, clean up first"
+    cleanup_expired_namespaces()
     scheduler.add_job(cleanup_expired_namespaces, "interval", hours=1)
     scheduler.start()
 
