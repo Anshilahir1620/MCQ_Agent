@@ -10,7 +10,7 @@ app = FastAPI(title="MCQ Generator API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://mcq-agent.vercel.app/",
+        "https://mcq-agent.vercel.app",
         "http://localhost:5173"           # local frontend dev
     ],
     allow_methods=["GET", "POST"],
