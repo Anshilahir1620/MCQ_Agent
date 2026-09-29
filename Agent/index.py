@@ -206,10 +206,40 @@ Content:
             raise
 
 
-async def generate_mcqs_for_topic(retriever, topic: str, num_questions: int = 5) -> MCQSet:
+async def generate_mcqs_for_topic(retriever, topic: str, num_questions: int = 5, max_concurrent: int = 6) -> dict:
+   
     docs = retriever.invoke(topic)
-    context = "\n\n".join(doc.page_content for doc in docs)
-    return await generate_mcqs_from_context(context, num_questions)
+    valid_docs = [d for d in docs if len(d.page_content.strip()) >= 100]
+    if not valid_docs:
+        return {"questions": [], "warning": "No relevant content found for this topic."}
+    if num_questions < len(valid_docs):
+        docs_to_use = select_spaced_chunks(valid_docs, num_questions)
+    else:
+        docs_to_use = valid_docs
+
+    base, remainder = divmod(num_questions, len(docs_to_use))
+    semaphore = asyncio.Semaphore(max_concurrent)
+
+    async def process_doc(i, doc):
+        q_count = base + (1 if i < remainder else 0)
+        if q_count == 0:
+            return []
+        async with semaphore:
+            try:
+                result = await generate_mcqs_from_context(doc.page_content, q_count)
+                return result.questions
+            except Exception as e:
+                logger.warning(f"Skipping topic chunk {i} (generation failed after retries): {e}")
+                return []
+
+    results = await asyncio.gather(*[process_doc(i, d) for i, d in enumerate(docs_to_use)])
+    all_questions = [q for chunk_result in results for q in chunk_result]
+
+    warning = None
+    if not all_questions:
+        warning = "Question generation failed for this topic. Please try again."
+
+    return {"questions": all_questions[:num_questions], "warning": warning}
 
 
 def select_spaced_chunks(valid_chunks, count: int):
