@@ -75,7 +75,7 @@ def load_website(url: str):
     return docs
 
 
-def chunk_data(documents, chunk_size: int = 2000, chunk_overlap: int = 200):
+def chunk_data(documents, chunk_size: int = 2500, chunk_overlap: int = 150):
     splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
     return splitter.split_documents(documents)
 
@@ -220,7 +220,7 @@ def select_spaced_chunks(valid_chunks, count: int):
     return [valid_chunks[i] for i in indices]
 
 
-async def generate_mcqs_for_all_chunks(chunks, total_questions: int = 10, max_concurrent: int = 3) -> dict:
+async def generate_mcqs_for_all_chunks(chunks, total_questions: int = 10, max_concurrent: int = 6) -> dict:
     valid_chunks = [c for c in chunks if len(c.page_content.strip()) >= 100]
     if not valid_chunks:
         return {"questions": [], "warning": "No readable text found in this document."}
