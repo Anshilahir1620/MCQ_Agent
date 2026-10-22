@@ -76,6 +76,8 @@ uvicorn main:app --reload
 
 API will be available at `http://localhost:8000`, with interactive docs at `http://localhost:8000/docs`.
 
+## Live Link: https://mcq-agent.vercel.app/
+
 ### 4. Deploy (Render)
 
 - **Build Command:** `pip install -r requirements.txt`
