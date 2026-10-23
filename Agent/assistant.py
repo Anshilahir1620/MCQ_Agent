@@ -13,7 +13,8 @@ from google.genai import types
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent
-KNOWLEDGE_PATH = BASE_DIR / "knowledge.json"
+KNOWLEDGE_PATH = Path("/etc/secrets/knowledge.json")
+
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
