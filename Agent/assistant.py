@@ -39,6 +39,7 @@ ALLOWED_ORIGINS = [
     "https://frontend-ten-umber-75.vercel.app",
     "http://localhost:3000",
     "http://localhost:5173",
+    "https://anshilahir.vercel.app/",
 ]
 
 app.add_middleware(
