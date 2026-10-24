@@ -14,17 +14,15 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent
 KNOWLEDGE_PATH = Path("/etc/secrets/knowledge.json")
-
-
 API_KEY = os.getenv("GEMINI_API_KEY")
-MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
+MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
 if not API_KEY:
     raise RuntimeError(
         "GEMINI_API_KEY is missing. Add it to your .env file locally "
         "or to your Render environment variables."
     )
-
+portfolio
 client = genai.Client(api_key=API_KEY)
 
 app = FastAPI(
