@@ -22,7 +22,7 @@ if not API_KEY:
         "GEMINI_API_KEY is missing. Add it to your .env file locally "
         "or to your Render environment variables."
     )
-portfolio
+
 client = genai.Client(api_key=API_KEY)
 
 app = FastAPI(
